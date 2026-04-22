@@ -1,0 +1,114 @@
+/* Satoshi font - self-hosted */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/satoshi-300.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/satoshi-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/satoshi-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/satoshi-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+:root[data-theme='light'],
+:root {
+  --sl-color-accent-low: #fff3e0;
+  --sl-color-accent: #fd941c;
+  --sl-color-accent-high: #fc7f12;
+  --sl-color-text-accent: #fd941c;
+  --sl-font: 'Satoshi', system-ui, sans-serif;
+  --sl-font-system: 'Satoshi', system-ui, sans-serif;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #fcfcfd;
+}
+
+body {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  color: #4b5565;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Satoshi', sans-serif;
+  color: #121212;
+  font-weight: 700;
+}
+
+h1,
+.sl-markdown-content h1 {
+  font-size: 28px;
+}
+
+h2,
+.sl-markdown-content h2 {
+  font-size: 24px;
+}
+
+h3,
+.sl-markdown-content h3 {
+  font-size: 21px;
+}
+
+h4,
+.sl-markdown-content h4 {
+  font-size: 18px;
+}
+
+.sl-markdown-content .sl-heading-wrapper {
+  --sl-anchor-icon-size: 0.41375em;
+  --sl-anchor-icon-gap: 0.5em;
+}
+
+.sl-markdown-content .sl-anchor-icon > svg {
+  vertical-align: middle;
+  transform: none;
+}
+
+.sidebar {
+  background: #f8f9fa;
+}
+
+
+/* Remove divider line to the right of nav buttons */
+.social-icons::after {
+  display: none !important;
+}
+
+/* Force light mode only — hide theme toggle */
+[data-theme='dark'] {
+  color-scheme: light;
+}
+starlight-theme-select,
+.theme-select {
+  display: none !important;
+}
+
+/* Sidebar nav link hover */
+#starlight__sidebar a:hover,
+#starlight__sidebar a:focus {
+  color: #fd941c !important;
+}
+
+/* Logo size */
+.site-title img {
+  width: 196px;
+  height: 16px;
+  object-fit: contain;
+}
