@@ -18,7 +18,6 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			pagination: false,
 			components: {
-				ThemeSelect: './src/components/ThemeSelect.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				SocialIcons: './src/components/SocialIcons.astro',
 			},
@@ -26,6 +25,7 @@ export default defineConfig({
 				{
 					label: '🔭 Overview',
 					items: [
+						{ label: 'Home', link: '/' },
 						{ label: 'What Is CloudForecast?', slug: 'overview/what-is-cloudforecast' },
 						{ label: 'FAQ', slug: 'overview/faq' },
 					],
@@ -33,21 +33,21 @@ export default defineConfig({
 				{
 					label: '🚀 Getting Started',
 					items: [
-						{ label: 'Setup Guide', slug: 'getting-started' },
+						{ label: 'Setup Guide', slug: 'getting-started/setup-guide' },
 						{ label: 'Signing Up', slug: 'getting-started/signing-up' },
-						{ label: 'Connecting Your AWS Account', slug: 'getting-started/aws/connecting-aws' },
-						{ label: 'Connecting Your Azure Account', slug: 'getting-started/azure/connecting-azure' },
-						{ label: 'Connecting Your Azure CSP Account', slug: 'getting-started/azure-csp/connecting-azure-csp' },
-						{ label: 'Connecting Databricks', slug: 'getting-started/databricks/connecting-databricks' },
-						{ label: 'Setting Up EKS & ECS Container Cost Visibility', slug: 'getting-started/container-costs/setting-up-container-costs' },
-					{ label: 'Setting Up ZeroWaste (AWS Cost Optimization)', slug: 'getting-started/zerowaste' },
+						{ label: 'Connecting Your AWS Account', slug: 'getting-started/connecting-aws' },
+						{ label: 'Connecting Your Azure Account', slug: 'getting-started/connecting-azure' },
+						{ label: 'Connecting Your Azure CSP Account', slug: 'getting-started/connecting-azure-csp' },
+						{ label: 'Connecting Databricks', slug: 'getting-started/connecting-databricks' },
+						{ label: 'Setting Up EKS & ECS Container Cost Visibility', slug: 'getting-started/setting-up-container-costs' },
+						{ label: 'Setting Up ZeroWaste (AWS Cost Optimization)', slug: 'getting-started/zerowaste' },
 					],
 				},
 				{
 					label: '✨ Features',
 					items: [
 						{ label: 'Cost Groups', slug: 'features/cost-groups' },
-						{ label: 'Cost Detective', slug: 'features/cost-detective' },
+{ label: 'Cost Detective', slug: 'features/cost-detective' },
 						{ label: 'ZeroWaste', slug: 'features/zerowaste' },
 						{ label: 'RI & SP Inventory', slug: 'features/ri-sp-inventory' },
 						{ label: 'RI & SP Usage Dashboard', slug: 'features/ri-sp-usage' },
@@ -69,6 +69,7 @@ export default defineConfig({
 						{ label: 'Jira', slug: 'integrations/jira' },
 						{ label: 'ProsperOps', slug: 'integrations/prosperops' },
 						{ label: 'Cortex', slug: 'integrations/cortex' },
+						{ label: 'Databricks', slug: 'integrations/databricks' },
 					],
 				},
 				{
@@ -77,7 +78,7 @@ export default defineConfig({
 						{ label: 'Settings', slug: 'account/settings' },
 						{ label: 'Billing', slug: 'account/billing' },
 						{ label: 'Single Sign-On', slug: 'account/sso' },
-						{ label: 'AWS IAM Permissions Reference', slug: 'getting-started/aws/iam-permissions' },
+						{ label: 'AWS IAM Permissions Reference', slug: 'account/iam-permissions' },
 					],
 				},
 			],

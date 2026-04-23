@@ -9,7 +9,7 @@ The Databricks dashboard is currently in beta and early access. Features and bre
 
 Once your Databricks source is active, CloudForecast gives you a dedicated dashboard for understanding where your Databricks Unit (DBU) costs are going — and, if your Databricks account runs on AWS or Azure, how much you're spending on the underlying cloud infrastructure.
 
-For setup instructions, see [Connecting Databricks to CloudForecast](/getting-started/databricks/connecting-databricks).
+For setup instructions, see [Connecting Databricks to CloudForecast](/getting-started/connecting-databricks/).
 
 ---
 

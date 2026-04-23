@@ -13,7 +13,7 @@ ZeroWaste integrates with [AWS Cost Optimization Hub](https://docs.aws.amazon.co
 
 Before setting up ZeroWaste, make sure you have:
 
-- An active AWS source already connected in CloudForecast (see [Connecting Your AWS Account](/getting-started/aws/connecting-aws))
+- An active AWS source already connected in CloudForecast (see [Connecting Your AWS Account](/getting-started/connecting-aws/))
 - Access to your **AWS root / payer account** to launch CloudFormation stacks
 - (Optional) AWS Organizations set up if you want ZeroWaste coverage across sub-accounts
 

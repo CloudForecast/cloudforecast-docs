@@ -13,7 +13,7 @@ This guide walks through everything you need to do to enable container cost visi
 
 Before you start, make sure you have:
 
-- An active AWS source already connected in CloudForecast (see [Connecting Your AWS Account](/getting-started/aws/connecting-aws))
+- An active AWS source already connected in CloudForecast (see [Connecting Your AWS Account](/getting-started/connecting-aws/))
 - Access to **AWS Billing and Cost Management** to create and configure Data Exports
 - Access to **AWS Cost Allocation Tags** to activate EKS and ECS metadata tags
 

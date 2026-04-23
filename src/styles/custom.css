@@ -28,27 +28,50 @@
   font-style: normal;
 }
 
-:root[data-theme='light'],
+/* Font — both modes */
 :root {
+  --sl-font: 'Satoshi', system-ui, sans-serif;
+  --sl-font-system: 'Satoshi', system-ui, sans-serif;
+}
+
+/* Accent — dark mode (default) */
+:root {
+  --sl-color-accent-low: hsl(30, 50%, 18%);
+  --sl-color-accent: #fd941c;
+  --sl-color-accent-high: hsl(30, 100%, 80%);
+  --sl-color-text-accent: hsl(30, 100%, 80%);
+}
+
+/* Accent + surfaces — light mode */
+:root[data-theme='light'] {
   --sl-color-accent-low: #fff3e0;
   --sl-color-accent: #fd941c;
   --sl-color-accent-high: #fc7f12;
   --sl-color-text-accent: #fd941c;
-  --sl-font: 'Satoshi', system-ui, sans-serif;
-  --sl-font-system: 'Satoshi', system-ui, sans-serif;
   --sl-color-bg-nav: #ffffff;
   --sl-color-bg-sidebar: #fcfcfd;
 }
 
 body {
   font-family: 'Satoshi', system-ui, sans-serif;
+}
+
+:root[data-theme='light'] body {
   color: #4b5565;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Satoshi', sans-serif;
-  color: #121212;
   font-weight: 700;
+}
+
+:root[data-theme='light'] h1,
+:root[data-theme='light'] h2,
+:root[data-theme='light'] h3,
+:root[data-theme='light'] h4,
+:root[data-theme='light'] h5,
+:root[data-theme='light'] h6 {
+  color: #121212;
 }
 
 h1,
@@ -81,7 +104,7 @@ h4,
   transform: none;
 }
 
-.sidebar {
+:root[data-theme='light'] .sidebar {
   background: #f8f9fa;
 }
 
@@ -91,14 +114,6 @@ h4,
   display: none !important;
 }
 
-/* Force light mode only — hide theme toggle */
-[data-theme='dark'] {
-  color-scheme: light;
-}
-starlight-theme-select,
-.theme-select {
-  display: none !important;
-}
 
 /* Sidebar nav link hover */
 #starlight__sidebar a:hover,
@@ -111,4 +126,9 @@ starlight-theme-select,
   width: 196px;
   height: 16px;
   object-fit: contain;
+}
+
+/* Logo dark mode — invert black to white */
+:root[data-theme='dark'] .site-title img {
+  filter: brightness(0) invert(1);
 }

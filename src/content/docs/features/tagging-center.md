@@ -86,4 +86,4 @@ Improving your tagging compliance directly improves the accuracy and usefulness 
 
 In addition to the live dashboards in the Tagging Center, CloudForecast generates a monthly Excel report summarizing your tagging compliance across all your compliance reports. This report is useful for leadership reviews, audit documentation, or sharing with teams that don't have direct CloudForecast access.
 
-See [Tagging Compliance Report](/features/reports/tagging-compliance) for details on what the report includes and how to configure who receives it.
+To configure recipients or customize what the report includes, reach out to [support@cloudforecast.io](mailto:support@cloudforecast.io).

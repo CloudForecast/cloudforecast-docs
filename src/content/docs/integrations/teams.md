@@ -28,8 +28,8 @@ The Microsoft Teams integration lets you post CloudForecast Cost Group reports i
 
 ## Step 2 — Connect the webhook in CloudForecast
 
-1. In CloudForecast, click **Reports** in the left navigation and open a Cost Group.
-2. Click **Configure** on the Cost Group you want to connect.
+1. In CloudForecast, click **Cost Groups** in the left navigation.
+2. On the Cost Group card you want to connect, click the **gear icon** to open its settings.
 3. Under **How would you like to receive your reports?**, find the Microsoft Teams row and click **Add Integration**.
 4. Paste the webhook URL you copied from Teams, then click **Save**.
 

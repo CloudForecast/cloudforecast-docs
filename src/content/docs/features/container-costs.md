@@ -7,7 +7,7 @@ Running containers on shared EC2 or Fargate capacity makes cost attribution hard
 
 CloudForecast solves this using **AWS Split Cost Allocation Data (SCAD)**, which allocates shared compute costs down to the individual pod or task level. You get cost visibility by cluster, namespace, deployment, ECS service, and Kubernetes label — without installing any agents in your cluster.
 
-For setup instructions, see [Setting Up EKS & ECS Container Cost Visibility](/getting-started/container-costs/setting-up-container-costs).
+For setup instructions, see [Setting Up EKS & ECS Container Cost Visibility](/getting-started/setting-up-container-costs/).
 
 ---
 

@@ -70,30 +70,37 @@ In short, CloudForecast + Jira ensures cloud cost anomalies and waste don’t ju
 
 ### **10\. Select the 19 scopes required by CloudForecast**
 
-  * Search and add the required scopes listed below one by one – there should be 19 total to select
-  * Ensure to check each scope carefully, as mistakes can lead to access issues if not all of them are selected: 
+  * Search and add the required scopes listed below one by one — there should be 19 total.
+  * Check each scope carefully; missing any will cause access issues.
 
-    
-    
-    read:application-role:jira
-    read:avatar:jira
-    read:field:jira
-    read:field-configuration:jira
-    read:group:jira
-    read:issue:jira
-    read:issue-meta:jira
-    read:issue-type:jira
-    read:issue-type-hierarchy:jira
-    read:project:jira
-    read:project-category:jira
-    read:project-version:jira
-    read:project.component:jira
-    read:project.property:jira
-    read:user:jira
-    write:attachment:jira
-    write:comment:jira
-    write:comment.property:jira
-    write:issue:jira
+**Read scopes (15):**
+
+```
+read:application-role:jira
+read:avatar:jira
+read:field:jira
+read:field-configuration:jira
+read:group:jira
+read:issue:jira
+read:issue-meta:jira
+read:issue-type:jira
+read:issue-type-hierarchy:jira
+read:project:jira
+read:project-category:jira
+read:project-version:jira
+read:project.component:jira
+read:project.property:jira
+read:user:jira
+```
+
+**Write scopes (4):**
+
+```
+write:attachment:jira
+write:comment:jira
+write:comment.property:jira
+write:issue:jira
+```
 
 ### **11\. Finalizing and Confirming Scopes**
 

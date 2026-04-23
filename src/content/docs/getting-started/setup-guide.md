@@ -15,9 +15,9 @@ Create your CloudForecast account and start your 30-day free trial — no credit
 
 CloudForecast supports multiple cloud providers. Connect the data source that matches your infrastructure:
 
-- **Amazon Web Services (AWS)** — [Connect AWS &rarr;](/getting-started/aws/connecting-aws)
-- **Microsoft Azure** — [Connect Azure &rarr;](/getting-started/azure/connecting-azure)
-- **Databricks** — [Connect Databricks &rarr;](/integrations/databricks)
+- **Amazon Web Services (AWS)** — [Connect AWS &rarr;](/getting-started/connecting-aws/)
+- **Microsoft Azure** — [Connect Azure &rarr;](/getting-started/connecting-azure/)
+- **Databricks** — [Connect Databricks &rarr;](/getting-started/connecting-databricks/)
 
 You can connect more than one data source if your organization uses multiple cloud providers.
 
@@ -31,12 +31,12 @@ You can find Cost Groups in the main navigation after your data source finishes 
 
 CloudForecast sends cost alerts and daily reports through the channels your team already uses. Set up one or more integrations so the right people stay informed:
 
-- [Slack integration &rarr;](/integrations/slack)
-- [Microsoft Teams integration &rarr;](/integrations/teams)
+- [Slack integration &rarr;](/integrations/slack/)
+- [Microsoft Teams integration &rarr;](/integrations/teams/)
 - Email reports are enabled by default for your account.
 
 ## Step 5 (Optional): Set Up ZeroWaste
 
 ZeroWaste identifies idle and underutilized cloud resources so your team can take action on cost optimization opportunities. If you want to start reducing waste alongside monitoring spend, set up ZeroWaste after your data source is connected.
 
-[Get started with ZeroWaste &rarr;](/getting-started/zerowaste)
+[Get started with ZeroWaste &rarr;](/getting-started/zerowaste/)

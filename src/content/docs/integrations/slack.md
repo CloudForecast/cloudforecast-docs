@@ -19,8 +19,8 @@ The Slack integration lets you deliver CloudForecast Cost Group reports to any S
 
 ## How to connect Slack
 
-1. In CloudForecast, click **Reports** in the left navigation and open a Cost Group.
-2. Click **Configure** on the Cost Group you want to connect.
+1. In CloudForecast, click **Cost Groups** in the left navigation.
+2. On the Cost Group card you want to connect, click the **gear icon** to open its settings.
 3. Under **How would you like to receive your reports?**, find the Slack row and click **Connect to Slack**.
 4. You will be redirected to a Slack authorization page. Log in if prompted.
 5. Select the Slack channel where reports should be posted, then click **Authorize**.

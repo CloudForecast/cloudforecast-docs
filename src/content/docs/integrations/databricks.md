@@ -5,7 +5,7 @@ description: Connect Databricks to CloudForecast for unified DBU cost tracking a
 
 CloudForecast integrates with Databricks to give you complete visibility into where your Databricks Unit (DBU) costs are going — broken down by workspace, cluster, job, and query — unified alongside your AWS and Azure costs.
 
-For full setup instructions, see [Connecting Databricks to CloudForecast](/getting-started/databricks/connecting-databricks).
+For full setup instructions, see [Connecting Databricks to CloudForecast](/getting-started/connecting-databricks/).
 
 ---
 
@@ -28,6 +28,6 @@ A small SQL warehouse is used to run cost analysis queries. CloudForecast stops 
 
 ## Setup
 
-See the step-by-step setup guide: [Connecting Databricks to CloudForecast](/getting-started/databricks/connecting-databricks).
+See the step-by-step setup guide: [Connecting Databricks to CloudForecast](/getting-started/connecting-databricks/).
 
 If you need help, reach out to [support@cloudforecast.io](mailto:support@cloudforecast.io).
