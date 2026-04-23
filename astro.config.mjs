@@ -7,6 +7,9 @@ export default defineConfig({
 	site: 'https://docs.cloudforecast.io',
 	integrations: [
 		starlight({
+			head: [
+				{ tag: 'meta', attrs: { name: 'robots', content: 'noindex, nofollow' } },
+			],
 			title: 'CloudForecast Docs',
 			logo: {
 				src: './src/assets/cloudforecast-logo.svg',
