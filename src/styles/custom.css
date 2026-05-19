@@ -1,28 +1,28 @@
 /* Satoshi font - self-hosted */
 @font-face {
   font-family: 'Satoshi';
-  src: url('../assets/fonts/satoshi-300.woff2') format('woff2');
+  src: url('/fonts/satoshi-300.woff2') format('woff2');
   font-weight: 300;
   font-display: swap;
   font-style: normal;
 }
 @font-face {
   font-family: 'Satoshi';
-  src: url('../assets/fonts/satoshi-400.woff2') format('woff2');
+  src: url('/fonts/satoshi-400.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
 @font-face {
   font-family: 'Satoshi';
-  src: url('../assets/fonts/satoshi-500.woff2') format('woff2');
+  src: url('/fonts/satoshi-500.woff2') format('woff2');
   font-weight: 500;
   font-display: swap;
   font-style: normal;
 }
 @font-face {
   font-family: 'Satoshi';
-  src: url('../assets/fonts/satoshi-700.woff2') format('woff2');
+  src: url('/fonts/satoshi-700.woff2') format('woff2');
   font-weight: 700;
   font-display: swap;
   font-style: normal;
@@ -116,8 +116,8 @@ h4,
 
 
 /* Sidebar nav link hover */
-#starlight__sidebar a:hover,
-#starlight__sidebar a:focus {
+#starlight__sidebar a:not([aria-current="page"]):hover,
+#starlight__sidebar a:not([aria-current="page"]):focus {
   color: #fd941c !important;
 }
 
