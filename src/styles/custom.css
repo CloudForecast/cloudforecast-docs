@@ -116,8 +116,8 @@ h4,
 
 
 /* Sidebar nav link hover */
-#starlight__sidebar a:hover,
-#starlight__sidebar a:focus {
+#starlight__sidebar a:not([aria-current="page"]):hover,
+#starlight__sidebar a:not([aria-current="page"]):focus {
   color: #fd941c !important;
 }
 
