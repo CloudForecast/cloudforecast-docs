@@ -9,6 +9,8 @@ export default defineConfig({
 		starlight({
 			head: [
 				{ tag: 'meta', attrs: { name: 'robots', content: 'noindex, nofollow' } },
+				{ tag: 'link', attrs: { rel: 'preload', href: '/fonts/satoshi-400.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' } },
+				{ tag: 'link', attrs: { rel: 'preload', href: '/fonts/satoshi-700.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' } },
 			],
 			title: 'CloudForecast Docs',
 			logo: {
@@ -18,6 +20,7 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			pagination: false,
 			components: {
+				Head: './src/components/Head.astro',
 				SiteTitle: './src/components/SiteTitle.astro',
 				SocialIcons: './src/components/SocialIcons.astro',
 			},
