@@ -7,8 +7,13 @@ export default defineConfig({
 	site: 'https://docs.cloudforecast.io',
 	integrations: [
 		starlight({
+			favicon: '/favicon.ico',
 			head: [
 				{ tag: 'meta', attrs: { name: 'robots', content: 'noindex, nofollow' } },
+				{ tag: 'link', attrs: { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' } },
+				{ tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' } },
+				{ tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' } },
+				{ tag: 'link', attrs: { rel: 'manifest', href: '/site.webmanifest' } },
 				{ tag: 'link', attrs: { rel: 'preload', href: '/fonts/satoshi-400.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' } },
 				{ tag: 'link', attrs: { rel: 'preload', href: '/fonts/satoshi-700.woff2', as: 'font', type: 'font/woff2', crossorigin: 'anonymous' } },
 			],
