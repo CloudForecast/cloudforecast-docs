@@ -3,9 +3,9 @@ title: Setting Up ZeroWaste (AWS Cost Optimization)
 description: How to set up ZeroWaste in CloudForecast to surface cost optimization opportunities across your AWS environment
 ---
 
-ZeroWaste is CloudForecast's cost optimization feature. It surfaces actionable recommendations to reduce waste across your AWS environment — including idle resources, rightsizing opportunities, Savings Plans, and Reserved Instance purchases.
+ZeroWaste is CloudForecast's cost optimization feature. It scans your AWS accounts each week for resources you are paying for but not fully using — including unattached and idle resources, over-provisioned instances and databases, storage that can move to a cheaper type, and old snapshots.
 
-ZeroWaste integrates with [AWS Cost Optimization Hub](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html), which consolidates recommendations from AWS Compute Optimizer and other AWS services into a single view. CloudForecast reads from this data to power your ZeroWaste dashboard and weekly health check reports.
+ZeroWaste runs CloudForecast's own checks against your resources. It can also add recommendations from [AWS Cost Optimization Hub](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html), which consolidates recommendations from AWS Compute Optimizer and other AWS services.
 
 ---
 
@@ -21,7 +21,7 @@ Before setting up ZeroWaste, make sure you have:
 
 ## Part 1 — Enable AWS Cost Optimization Hub
 
-ZeroWaste pulls its recommendations from [AWS Cost Optimization Hub](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html). You need to enable this in your AWS account first.
+ZeroWaste can add recommendations from [AWS Cost Optimization Hub](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html) to its own policies. To use them, enable Cost Optimization Hub, export its recommendations to the S3 bucket that holds your CUR export, and give CloudForecast the export's prefix.
 
 **To enable Cost Optimization Hub:**
 
@@ -50,6 +50,19 @@ Once enabled, AWS Cost Optimization Hub generates recommendations for:
 
 See the [full list of supported resources](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html#coh-supported-resources) in the AWS documentation.
 
+ZeroWaste currently imports Cost Optimization Hub recommendations for EC2 instances, EC2 Auto Scaling groups, EBS volumes, RDS databases, ECS services, and Lambda functions. Savings Plans and Reserved Instance purchase recommendations are not imported. Use [RI & SP Inventory](/features/ri-sp-inventory/) and [RI & SP Usage](/features/ri-sp-usage/) to track your commitments.
+
+### Export recommendations and add the prefix
+
+CloudForecast reads Cost Optimization Hub recommendations from a Data Export, the same way it reads your CUR. No additional IAM permissions are needed. CloudForecast only needs the export's S3 prefix.
+
+1. In the AWS Console, go to **Billing and Cost Management → Data Exports → Create export** and select **Standard data export**. See the [AWS guide to creating a standard data export](https://docs.aws.amazon.com/cost-management/latest/userguide/dataexports-create-standard.html) for a walkthrough
+2. Under the table options, choose **Cost optimization recommendations**
+3. For the destination, choose the **same S3 bucket as your CUR export** and enter an S3 path prefix (e.g. `cloudforecast-coh`). CloudForecast's read-only access is scoped to that bucket, so the export must be delivered there
+4. In CloudForecast, open your AWS source on the **Sources** page and enter that prefix in the **Cost Optimization Hub Prefix** field. See [Connecting Your AWS Account](/getting-started/connecting-aws/#part-2--connect-cloudforecast-to-your-aws-account) for the full connection form
+
+> AWS can take up to **24 hours** to deliver the first export. Cost Optimization Hub recommendations appear in ZeroWaste after the next daily import.
+
 ---
 
 ## Part 2 — Grant ZeroWaste Permissions in CloudForecast
@@ -63,7 +76,7 @@ There are two steps depending on your AWS account structure:
 
 To get started, go to **Sources → ZeroWaste → Credentials** in CloudForecast, then click **See IAM Configuration Steps** to reveal the setup instructions and direct CloudFormation links.
 
-You can also review the full permissions being granted here: [ZeroWaste CloudFormation Template](https://assets-cloudforecast-io.s3.amazonaws.com/cloudforecast-zw-setup.json)
+You can also review the full permissions being granted here: [ZeroWaste CloudFormation Template](https://assets-cloudforecast-io.s3.amazonaws.com/cloudforecast-zw-setup-v2.json). For what each permission is used for, see the [ZeroWaste IAM Permissions Reference](/account/zerowaste-iam-permissions/).
 
 ---
 
@@ -93,13 +106,14 @@ This extends ZeroWaste permissions to all sub-accounts in your AWS Organization.
 
 2. **Choose a template** — Under **Amazon S3 URL**, paste:
    ```
-   https://assets-cloudforecast-io.s3.amazonaws.com/cloudforecast-zw-setup.json
+   https://assets-cloudforecast-io.s3.amazonaws.com/cloudforecast-zw-setup-v2.json
    ```
    Click **Next**
 
 3. **Specify StackSet details**:
    - Enter a **Stack name** and **Description** (e.g. `cloudforecast-zerowaste`)
-   - Go back to CloudForecast → **IAM Configuration Steps** and copy the **External ID** shown there — paste it into the **ExternalID** field in AWS
+   - Go back to CloudForecast → **IAM Configuration Steps** and copy the **External ID** shown there — paste it into the **CFExternalId** field in AWS
+   - Copy the **CloudForecastAccessRole** value shown in the same steps and select it in the **CloudForecastAccessRole** field in AWS. This is the CloudForecast role that is allowed to assume the ZeroWaste role in your accounts
    - Confirm the **RoleName** matches what's shown in CloudForecast
    - Click **Next**
 
@@ -127,19 +141,20 @@ Once both steps are complete, go to **Sources → ZeroWaste → Credentials** in
 If any accounts show an error, check that:
 - The **RoleName** in the CloudFormation stack matches exactly what's shown in CloudForecast
 - The **ExternalID** was copied correctly from CloudForecast (it is unique to your account)
+- For StackSet deployments, the **CloudForecastAccessRole** matches the value shown in CloudForecast
 - Your payer account has [Cost Optimization Hub enabled](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html#coh-enable)
 
 ---
 
 ## What Happens Next
 
-After setup is complete, CloudForecast will begin importing your Cost Optimization Hub recommendations. You can expect to see data in your ZeroWaste dashboard within **24–48 hours**.
+After setup is complete, ZeroWaste runs its first scan of your accounts. You can expect to see data in your ZeroWaste dashboard within **24–48 hours**.
 
 From there, ZeroWaste will surface:
 
-- **Weekly health check reports** — a prioritized list of waste and savings opportunities delivered to your inbox or Slack
-- **Resource-level recommendations** — rightsizing, idle resource deletion, Savings Plans, and Reserved Instance purchases
-- **Cost group breakdowns** — slice recommendations by team, service, or tag to assign accountability to the right engineers
+- **Email reports** — a summary of waste findings by email, sent weekly, every two weeks, or monthly with a cost report
+- **Resource-level recommendations** — rightsizing, cleanup of unused and idle resources, and storage upgrades, with each resource's 30-day cost
+- **Team views** — filter by tags, sub-accounts, cost categories, or products, or open ZeroWaste from a Cost Group to assign accountability to the right engineers
 
 ---
 
@@ -149,7 +164,7 @@ From there, ZeroWaste will surface:
 Only if you have sub-accounts. If you have a single payer account, Step 1 is all you need.
 
 **What permissions does ZeroWaste require?**
-ZeroWaste requires read-only access to AWS Cost Optimization Hub data and related resource metadata. You can review the exact permissions in the [ZeroWaste CloudFormation Template](https://assets-cloudforecast-io.s3.amazonaws.com/cloudforecast-zw-setup.json).
+ZeroWaste requires read-only access to resource metadata, such as EC2 instances, EBS volumes, RDS databases, load balancers, S3 bucket settings, and CloudWatch metrics. You can review the exact permissions in the [ZeroWaste CloudFormation Template](https://assets-cloudforecast-io.s3.amazonaws.com/cloudforecast-zw-setup-v2.json) and the [ZeroWaste IAM Permissions Reference](/account/zerowaste-iam-permissions/). Cost Optimization Hub recommendations need no extra permissions. CloudForecast reads them from the Data Export prefix you add to your AWS source.
 
 **Does ZeroWaste work without Cost Optimization Hub?**
 CloudForecast has its own optimization policies that run independently, but enabling [AWS Cost Optimization Hub](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html) significantly expands recommendation coverage and aligns with AWS best practices.

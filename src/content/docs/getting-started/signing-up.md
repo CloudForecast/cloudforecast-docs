@@ -20,7 +20,7 @@ Choose a password and confirm it in the field below. There is no minimum complex
 **How did you hear about us?**
 A short free-text field — just let us know where you found CloudForecast (for example, LinkedIn, Reddit, Google, a colleague's recommendation). This field is required.
 
-Once you have filled out all three fields, click **Create Account**. By doing so, you agree to CloudForecast's [Terms of Service](https://cloudforecast.io/terms.html) and [Privacy Policy](https://cloudforecast.io/privacy.html).
+Once you have filled out all three fields, click **Create Account**. By doing so, you agree to CloudForecast's [Terms of Service](https://www.cloudforecast.io/terms-conditions/) and [Privacy Policy](https://www.cloudforecast.io/privacy-policy/).
 
 ## The Welcome Questionnaire
 

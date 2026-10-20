@@ -1,114 +1,139 @@
 ---
 title: "Using ZeroWaste"
-description: "How to read and act on ZeroWaste recommendations to reduce AWS waste through rightsizing, idle resource cleanup, Savings Plans, and Reserved Instances."
+description: "How ZeroWaste finds unused and over-provisioned AWS resources, and how to review, filter, report on, and act on its recommendations."
 ---
 
-ZeroWaste is CloudForecast's cost optimization feature. Once set up, it continuously surfaces actionable recommendations to reduce waste across your AWS environment — organized by type, filterable by team or account, and integrated with Jira so nothing falls through the cracks.
+ZeroWaste is CloudForecast's waste-detection feature. Once a week, it scans your AWS accounts for resources you are paying for but not fully using, such as unattached EBS volumes, idle load balancers, and over-provisioned instances. It then shows what each one costs you.
 
-This page covers how to use ZeroWaste after setup is complete. If you haven't set it up yet, start with the [ZeroWaste Setup Guide](/getting-started/zerowaste).
+ZeroWaste is read-only. It recommends changes, and your team decides what to act on.
+
+This page covers how to use ZeroWaste after setup. If you haven't set it up yet, start with [Setting Up ZeroWaste](/getting-started/zerowaste/).
+
+---
+
+## Where Recommendations Come From
+
+ZeroWaste combines up to three sources. On the dashboard, recommendations are labeled **CloudForecast** or **AWS Cost Optimization Hub**.
+
+| Source | What it finds | What it needs |
+|---|---|---|
+| **CloudForecast checks** | Unused, idle, and over-provisioned resources across EC2, EBS, RDS, load balancers, S3, and CloudWatch Logs | The [ZeroWaste IAM role](/account/zerowaste-iam-permissions/) in each account you want scanned |
+| **Container checks** | Over-provisioned CPU and memory for ECS and EKS workloads | [Container cost visibility](/getting-started/setting-up-container-costs/) with split cost allocation data in your CUR |
+| **AWS Cost Optimization Hub** | AWS recommendations for EC2 instances, Auto Scaling groups, EBS volumes, RDS databases, ECS services, and Lambda functions | A [Cost Optimization Hub export prefix](/getting-started/zerowaste/#export-recommendations-and-add-the-prefix) on your AWS source |
+
+ZeroWaste does not recommend Savings Plans or Reserved Instance purchases. To track commitments, use [RI & SP Inventory](/features/ri-sp-inventory/) and the [RI & SP Usage Dashboard](/features/ri-sp-usage/).
+
+---
+
+## What CloudForecast Checks For
+
+CloudForecast's own checks look at the last 14 days of usage where metrics apply:
+
+- **EC2** — previous-generation instance families, and instances whose maximum CPU stayed under 40%
+- **EBS** — unattached volumes, volumes with no reads or writes, gp2 volumes that can move to gp3, and snapshots 90 days or older
+- **RDS** — databases with no connections, databases whose maximum CPU stayed under 40%, and gp2 storage that can move to gp3
+- **Load balancers** — Application and Network Load Balancers with no traffic, and Classic Load Balancers with no registered instances
+- **S3** — buckets with no lifecycle rules
+- **CloudWatch Logs** — log groups that never expire
+
+For exact thresholds and the permission behind each check, see the [ZeroWaste IAM Permissions Reference](/account/zerowaste-iam-permissions/#permissions-by-check).
 
 ---
 
 ## The ZeroWaste Dashboard
 
-The ZeroWaste dashboard is your starting point for reviewing cost optimization opportunities. Recommendations are grouped by type so you can quickly focus on the category most relevant to your team:
+The dashboard groups findings into **AWS**, **AWS ECS**, and **AWS EKS** sections. Within each section, a card for each resource type, such as EC2 Instances, EBS Volumes, or S3 Buckets, shows:
 
-- **Rightsizing** — EC2 instances, RDS databases, Lambda functions, and other resources that are over-provisioned based on actual usage
-- **Idle Resources** — Resources that are running but consuming little or no meaningful workload (e.g. unused EBS volumes, idle EC2 instances)
-- **Savings Plans** — Commitment-based discount recommendations based on your on-demand usage patterns
-- **Reserved Instances** — RI purchase recommendations for services where Savings Plans don't apply (e.g. RDS, ElastiCache, Redshift)
-- **Other Optimizations** — Graviton migration opportunities, ECS/EKS Fargate rightsizing, and additional recommendations from AWS Cost Optimization Hub
+- **Total cost** of the flagged resources over the last 30 days
+- **Number of resources** flagged
 
-Each group shows the total estimated monthly savings available, so you can immediately see where the biggest opportunity lies.
+Open a card to see every flagged resource in a table. Depending on the resource type, the table shows:
 
----
+- **Recommended action** — what the check found and what to do, labeled with its source (**CloudForecast** or **AWS Cost Optimization Hub**)
+- **Account and region** — where the resource lives
+- **Resource details** — such as the resource ID, instance type, engine, or status
+- **Cost** — what the resource cost over the last 30 days
+- **Jira** — create a ticket for the resource (see [below](#creating-jira-tickets))
 
-## Reading a Recommendation
+You can export any table to CSV.
 
-Each recommendation card gives you the information needed to evaluate and act on it:
-
-- **Resource ID** — The specific AWS resource the recommendation applies to (e.g. an EC2 instance ID or RDS instance name)
-- **Account and Region** — Which sub-account and AWS region the resource lives in
-- **Current Cost** — The estimated monthly cost of the resource at its current configuration
-- **Potential Savings** — How much you could save per month by acting on the recommendation
-- **Recommended Action** — What to do: resize to a specific instance type, delete the resource, purchase a commitment, or migrate to a different family (e.g. Graviton)
-- **Confidence** — AWS's confidence level in the recommendation, based on the amount of usage data available
-
-Recommendations come from [AWS Cost Optimization Hub](https://docs.aws.amazon.com/cost-management/latest/userguide/cost-optimization-hub.html), which aggregates data from AWS Compute Optimizer and other AWS services. CloudForecast refreshes this data daily.
+> Resources with no cost in the last 30 days don't appear on the dashboard.
 
 ---
 
-## Filtering and Prioritizing Recommendations
+## Filtering Recommendations
 
-When you have hundreds of recommendations across a large AWS environment, filtering is essential for getting to the ones your team should act on first.
+Narrow the dashboard to the resources a team owns or cares about. You can filter by:
 
-You can filter recommendations by:
+- **Tags**
+- **Sub-accounts**
+- **Cost categories**
+- **Products**
 
-- **Account** — Narrow to a specific sub-account to focus a team on their own resources
-- **Region** — Filter to a specific AWS region
-- **Service** — Show only recommendations for EC2, RDS, Lambda, or other specific services
-- **Tag** — Filter by resource tags to see recommendations scoped to a particular team, environment, or application
-
-To prioritize effectively, sort by **Potential Savings** descending. This surfaces the highest-impact items first and is usually the right place to start. For teams with compliance requirements, filtering by a specific account or tag before sorting gives a focused list that's easier to assign and track.
-
----
-
-## Weekly ZeroWaste Health Check Report
-
-Each week, CloudForecast sends a ZeroWaste health check report summarizing the top optimization opportunities across your environment. The report is designed to be actionable at a glance and is typically reviewed in weekly or bi-weekly engineering or infrastructure syncs.
-
-The health check report includes:
-
-- **Total estimated savings available** — The aggregate monthly savings opportunity across all recommendation types
-- **Top recommendations by savings** — A prioritized list of the highest-impact individual resource recommendations
-- **New recommendations since last week** — Items that appeared since the previous report, so you can catch newly idle or newly over-provisioned resources quickly
-- **Savings realized** — Estimated savings from recommendations that were acted on in the prior period
-
-The report is delivered by email to users configured to receive it. Reach out to [support@cloudforecast.io](mailto:support@cloudforecast.io) if you need to adjust the recipient list.
-
----
-
-## Creating Jira Tickets from Recommendations
-
-If your team uses Jira for tracking engineering work, ZeroWaste can create remediation tickets directly from recommendations — so optimization work gets into your backlog alongside everything else, rather than sitting in a separate tool.
-
-With the Jira integration enabled:
-
-1. Open a recommendation in the ZeroWaste dashboard
-2. Click **Create Jira Ticket**
-3. The ticket is pre-populated with the resource ID, recommended action, estimated savings, and a link back to the CloudForecast recommendation
-4. Assign it to the appropriate team member and add it to your sprint or backlog
-
-Tickets created this way stay linked to the recommendation in CloudForecast, so you can see which recommendations are in progress and which have been resolved.
-
-To connect your Jira workspace, go to **Settings → Integrations → Jira** in CloudForecast.
+To prioritize, start with the cards and resources with the highest 30-day cost.
 
 ---
 
 ## ZeroWaste and Cost Groups
 
-Cost Groups let you slice your AWS spend by team, service, product, or any tag-based dimension. ZeroWaste respects this structure — you can view recommendations filtered to the resources that belong to a specific Cost Group.
+Each [Cost Group](/features/cost-groups/) with an AWS source has a **Zero Waste** button. It opens the ZeroWaste dashboard scoped to that group's resources, so a team sees only its own findings.
 
-This is particularly useful when you want to:
+---
 
-- Give a specific team visibility into only their own optimization opportunities
-- Track savings progress per team over time
-- Hold teams accountable for acting on recommendations in their Cost Group
+## ZeroWaste Email Reports
 
-To use this, navigate to a Cost Group in CloudForecast and look for the ZeroWaste section within that group's view. Alternatively, filter the main ZeroWaste dashboard by the tags that define your Cost Group.
+You can add a ZeroWaste report to a cost report, so the people who receive that report also get a summary of waste findings by email. The ZeroWaste report covers the same accounts and filters as its cost report.
+
+When you add it, choose:
+
+- **Frequency** — weekly on Tuesday, every two weeks on Tuesday, or monthly on the first weekday after the 5th
+- **Cost threshold** — only include resources costing more than (or less than) an amount you set. The default includes every resource with a cost above $0
+
+This lets you send each team a focused waste report for the resources they own.
+
+---
+
+## Creating Jira Tickets
+
+With the [Jira integration](/integrations/jira/) connected, you can create a Jira issue for any flagged resource:
+
+1. Open a resource table on the ZeroWaste dashboard
+2. Click the Jira option on the resource's row
+3. Review the prefilled details, including the resource ID, its tags, and a link back to CloudForecast
+4. Choose the issue type, adjust the summary and description, and create the issue
+
+The issue lands in your Jira project with the context an engineer needs to act on it.
+
+---
+
+## Excluding Resources
+
+If some resources should never be flagged, such as a disaster recovery environment, exclude them by tag:
+
+1. Go to **Sources → ZeroWaste → Credentials** in CloudForecast
+2. Under **Excluded Tags**, add a tag key and value. To exclude every value of a key, use `*` as the value
+3. Save
+
+Matching resources are excluded starting with the next weekly scan.
 
 ---
 
 ## Frequently Asked Questions
 
 **Will ZeroWaste make any changes to my AWS resources?**
-No. ZeroWaste is read-only. It surfaces recommendations for your team to evaluate and act on — it never modifies, stops, resizes, or deletes any resources.
+No. ZeroWaste is read-only. It never modifies, stops, resizes, or deletes resources. See the [ZeroWaste IAM Permissions Reference](/account/zerowaste-iam-permissions/) for the full list of permissions.
 
 **How often are recommendations updated?**
-AWS Cost Optimization Hub refreshes recommendations daily. CloudForecast imports the latest data each day, so your dashboard reflects current findings.
+ZeroWaste scans once a week. Each scan uses the latest Cost Optimization Hub export available, if you've set one up.
 
 **Why do I see fewer recommendations than I expected?**
-Coverage depends on which AWS services you're running and whether Cost Optimization Hub has enough usage history for each resource. Recommendations for new resources may take a few days to appear. See the [setup guide](/getting-started/zerowaste) to verify your configuration is complete.
+Common reasons:
 
-**Can I dismiss or snooze a recommendation I've decided not to act on?**
-Reach out to [support@cloudforecast.io](mailto:support@cloudforecast.io) for options around managing acknowledged recommendations.
+- The ZeroWaste role isn't deployed in every account. Check **Sources → ZeroWaste → Credentials** for accounts without a green checkmark
+- ZeroWaste only scans regions where your Cost & Usage Report shows spend
+- The Cost Optimization Hub export prefix isn't set on your AWS source, so Hub recommendations aren't included
+- The resource had no cost in the last 30 days
+- The resource matches one of your **Excluded Tags**, or a dashboard filter is active
+
+**Can I hide a recommendation I've decided not to act on?**
+Yes. Tag the resource and add that tag to your [Excluded Tags](#excluding-resources).

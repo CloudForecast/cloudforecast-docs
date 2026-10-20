@@ -10,6 +10,11 @@ To use CloudForecast with AWS, you need two things in place:
 
 CloudForecast never makes changes to your infrastructure. We only ever read your cost data.
 
+> **Review the permissions first:** CloudForecast creates its read-only IAM role with this CloudFormation template:
+> [`cloudforecast-cu-setup-v2.json`](https://s3.amazonaws.com/assets-cloudforecast-io/cloudforecast-cu-setup-v2.json)
+>
+> For an explanation of each permission and why it's needed, see the [AWS IAM Permissions Reference](/account/iam-permissions/).
+
 ---
 
 ## Part 1 — Set Up Your AWS Cost & Usage Report (CUR 2.0)
@@ -156,7 +161,7 @@ Once you've entered your S3 bucket name in the form:
 2. Review and launch the stack — it creates a read-only IAM role for CloudForecast automatically
 3. Copy the **IAM ARN** from the stack outputs back into the CloudForecast form
 
-[View CloudFormation setup instructions →](https://www.cloudforecast.io/documentation/getting-started/cloudformation-method)
+You can review the template before launching it: [`cloudforecast-cu-setup-v2.json`](https://s3.amazonaws.com/assets-cloudforecast-io/cloudforecast-cu-setup-v2.json).
 
 ---
 
@@ -215,4 +220,4 @@ After a successful connection test, it typically takes **24–36 hours** for you
 Yes, but we recommend [CUR 2.0 (Data Exports)](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html) for the best compatibility and feature support.
 
 **Will CloudForecast change anything in my AWS account?**
-No. CloudForecast is strictly read-only. The IAM role we create only has permission to read from your S3 bucket — nothing else. You can review our permissions in the [CloudFormation template](https://www.cloudforecast.io/documentation/getting-started/cloudformation-method).
+No. CloudForecast is strictly read-only. The IAM role can read the cost data in your CUR S3 bucket, and can make read-only calls to the Cost Explorer, Savings Plans, and Organizations APIs. It cannot create, modify, or delete anything. You can review the permissions in the [CloudFormation template](https://s3.amazonaws.com/assets-cloudforecast-io/cloudforecast-cu-setup-v2.json) and see why each one is needed in the [AWS IAM Permissions Reference](/account/iam-permissions/).

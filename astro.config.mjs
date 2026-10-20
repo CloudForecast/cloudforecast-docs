@@ -1,10 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import rehypeLinksNewTab from './src/plugins/rehype-links-new-tab.mjs';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://docs.cloudforecast.io',
+	markdown: {
+		rehypePlugins: [rehypeLinksNewTab],
+	},
 	integrations: [
 		starlight({
 			favicon: '/favicon.ico',
@@ -87,6 +91,7 @@ export default defineConfig({
 						{ label: 'Billing', slug: 'account/billing' },
 						{ label: 'Single Sign-On', slug: 'account/sso' },
 						{ label: 'AWS IAM Permissions Reference', slug: 'account/iam-permissions' },
+						{ label: 'ZeroWaste IAM Permissions Reference', slug: 'account/zerowaste-iam-permissions' },
 					],
 				},
 			],
