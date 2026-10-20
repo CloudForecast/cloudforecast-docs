@@ -15,13 +15,14 @@ This page walks through the full role, statement by statement, so you know exact
 
 ## Permissions at a Glance
 
-Every permission in the role is a read-only `Describe`, `Get`, or `List` call.
+Every permission in the role is a read-only `Describe`, `Get`, or `List` call, except `support:RefreshTrustedAdvisorCheck`, which asks AWS to re-run a Trusted Advisor check and changes none of your resources.
 
 | Permission | Used for |
 |---|---|
 | `ec2:DescribeInstances` | Previous-generation and over-provisioned EC2 instances |
 | `ec2:DescribeVolumes` | Unattached or idle EBS volumes, and gp2 volumes that can move to gp3 |
 | `ec2:DescribeSnapshots` | EBS snapshots older than 90 days |
+| `ec2:DescribeTags` | Not used by any current check (see [below](#granted-but-not-currently-used)) |
 | `rds:DescribeDBInstances` | Unused and over-provisioned RDS databases, and gp2 storage that can move to gp3 |
 | `rds:DescribeDBSnapshots` | Not used by any current check (see [below](#granted-but-not-currently-used)) |
 | `elasticloadbalancing:DescribeLoadBalancers` | Unused Application, Network, and Classic Load Balancers |
@@ -35,6 +36,7 @@ Every permission in the role is a read-only `Describe`, `Get`, or `List` call.
 | `cloudwatch:GetMetricStatistics` | 14 days of usage metrics for the checks above |
 | `tag:GetResources` | Tags on Classic Load Balancers and log groups |
 | `organizations:ListAccounts` | Not used by any current check (see [below](#granted-but-not-currently-used)) |
+| `support:DescribeTrustedAdvisorChecks`, `support:DescribeTrustedAdvisorCheckResult`, `support:DescribeTrustedAdvisorCheckSummaries`, `support:DescribeTrustedAdvisorCheckRefreshStatuses`, `support:RefreshTrustedAdvisorCheck`, `trustedadvisor:Describe*` | Not used by any current check (see [below](#granted-but-not-currently-used)) |
 
 Every statement uses `"Resource": "*"`, because AWS does not support resource-level restrictions for these describe and list calls.
 
@@ -71,6 +73,7 @@ The template creates one IAM policy per check, so you can see in the IAM console
 
 ```
 ec2:DescribeInstances
+ec2:DescribeTags
 ```
 
 - **Previous-generation instances:** running instances in older families (such as `t2`, `m4`, `c4`, `r4`, `i2`, `p2`) that are candidates for an upgrade to a current generation.
@@ -87,6 +90,7 @@ ec2:DescribeInstances
 ```
 ec2:DescribeVolumes
 ec2:DescribeSnapshots
+ec2:DescribeTags
 ```
 
 - **Unused or unattached volumes:** volumes older than 15 days that are not attached to any instance, or that had **zero reads and writes** in the last 14 days.
@@ -180,12 +184,14 @@ tag:GetResources
 
 ## Granted but Not Currently Used
 
-The template grants two permissions that no current ZeroWaste check uses:
+The template grants some permissions that no current ZeroWaste check uses:
 
 - **`rds:DescribeDBSnapshots`** (policy `CloudForecast-ZW-RdsOldSnapshot`): reserved for an old RDS snapshot check. ZeroWaste does not currently flag RDS snapshots.
 - **`organizations:ListAccounts`** (policy `CloudForecast-Aws-Organization-Policy`): CloudForecast lists your organization's accounts through the [core AWS connection](/account/iam-permissions/#aws-organizations--account-enumeration), not through this role.
+- **`ec2:DescribeTags`** (EC2 and EBS policies): `DescribeInstances`, `DescribeVolumes`, and `DescribeSnapshots` already return tags, so ZeroWaste does not call it today.
+- **Trusted Advisor** (policy `CloudForecast-ZW-TrustedAdvisor`): reserved for Trusted Advisor-based recommendations. `RefreshTrustedAdvisorCheck` only asks AWS to re-run a check.
 
-Both are read-only. If you prefer not to grant them, contact [support@cloudforecast.io](mailto:support@cloudforecast.io) before removing them.
+None of them can change your resources. If you prefer not to grant them, contact [support@cloudforecast.io](mailto:support@cloudforecast.io) before removing them.
 
 ---
 
@@ -202,7 +208,7 @@ Some ZeroWaste recommendations come from data CloudForecast already has, so they
 
 | Property | Detail |
 |---|---|
-| **Access type** | Read-only. No `Create*`, `Put*`, `Update*`, `Delete*`, `Stop*`, or `Modify*` actions |
+| **Access type** | Read-only. No `Create*`, `Put*`, `Update*`, `Delete*`, `Stop*`, or `Modify*` actions. The only non-read action, `support:RefreshTrustedAdvisorCheck`, re-runs a Trusted Advisor check |
 | **Principal** | One specific CloudForecast role, not the whole CloudForecast account |
 | **Authentication** | External ID required on every role assumption, unique per CloudForecast customer |
 | **Data accessed** | Resource configuration, tags, and CloudWatch metric statistics. Never object contents, database data, volume data, or log events |
