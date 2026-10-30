@@ -5,6 +5,10 @@ description: "Everything you need to get started with and get the most out of Cl
 
 Welcome to the CloudForecast documentation. Find guides for setting up your account, understanding features, and connecting your favorite tools.
 
+:::tip[Need help? Contact us]
+Email [support@cloudforecast.io](mailto:support@cloudforecast.io) and we'll get back to you within one business day. You don't need a CloudForecast account to reach us.
+:::
+
 ## Overview
 
 - [What Is CloudForecast?](/overview/what-is-cloudforecast/)
